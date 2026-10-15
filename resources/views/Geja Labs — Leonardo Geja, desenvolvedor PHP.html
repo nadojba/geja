@@ -1,0 +1,2447 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <title>Geja Labs — Leonardo Geja, desenvolvedor PHP</title>
+        <meta
+            name="description"
+            content="Geja Labs: experimentos, projetos pessoais e leituras de Leonardo Geja, desenvolvedor PHP na Unoesc."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --m: Consolas, 'JetBrains Mono', ui-monospace, monospace;
+                box-sizing: border-box;
+                padding-top: env(safe-area-inset-top, 0px);
+                padding-bottom: env(safe-area-inset-bottom, 0px);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: #16161c;
+                color: #f9f9f9;
+                font-family: Inter, Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                overflow-x: hidden;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            a:focus-visible,
+            summary:focus-visible,
+            button:focus-visible,
+            input:focus-visible {
+                outline: 3px solid #c8ff00;
+                outline-offset: 6px;
+            }
+
+            h1,
+            h2,
+            h3 {
+                font-family: Inter, Arial, sans-serif;
+                letter-spacing: -0.055em;
+                font-weight: 600;
+                line-height: 1.08;
+                margin: 0;
+            }
+
+            h1 {
+                font-size: clamp(52px, 5.6vw, 78px);
+                line-height: 1.01;
+                letter-spacing: -0.067em;
+                margin-bottom: 28px;
+            }
+
+            h2 {
+                font-size: clamp(30px, 3.7vw, 48px);
+            }
+
+            h3 {
+                font-size: 23px;
+                letter-spacing: -0.035em;
+                line-height: 1.25;
+            }
+
+            p {
+                margin: 0;
+                line-height: 1.7;
+            }
+
+            em {
+                font-style: normal;
+                color: #ff8739;
+            }
+
+            section[id],
+            main[id] {
+                scroll-margin-top: 100px;
+            }
+
+            .fm-wrap {
+                width: min(1200px, calc(100% - 96px));
+                margin-inline: auto;
+            }
+
+            .fm-skip {
+                position: fixed;
+                left: 20px;
+                top: -100px;
+                z-index: 30;
+                background: #16161c;
+                padding: 16px;
+            }
+
+            .fm-skip:focus {
+                top: 12px;
+            }
+
+            .fm-header {
+                min-height: 92px;
+                border-bottom: 1px solid #34333d;
+                display: flex;
+                align-items: center;
+                gap: 40px;
+                padding: 18px max(48px, calc((100vw - 1200px) / 2));
+                background: #16161c;
+                position: sticky;
+                top: env(safe-area-inset-top, 0px);
+                z-index: 20;
+                transition:
+                    background 0.25s,
+                    border-color 0.25s,
+                    box-shadow 0.25s;
+            }
+
+            .fm-header.is-scrolled {
+                background: rgba(22, 22, 28, 0.76);
+                backdrop-filter: blur(22px) saturate(150%);
+                -webkit-backdrop-filter: blur(22px) saturate(150%);
+                border-bottom-color: #ffffff20;
+                box-shadow:
+                    0 8px 30px #0002,
+                    inset 0 1px #ffffff08;
+            }
+
+            .fm-brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 29px;
+                font-weight: 700;
+                letter-spacing: -1.8px;
+            }
+
+            .fm-brand > span {
+                display: grid;
+                place-items: center;
+                background: #ff8739;
+                color: #16161c;
+                border-radius: 6px;
+                width: 33px;
+                height: 35px;
+                font-size: 29px;
+                line-height: 1;
+            }
+
+            .fm-desktop-nav {
+                display: flex;
+                gap: 28px;
+                margin-left: auto;
+                font-size: 13px;
+                color: #c2c8ce;
+            }
+
+            .fm-desktop-nav a:hover,
+            .fm-footer > a:last-child:hover {
+                color: #ff8739;
+            }
+
+            .fm-header-actions {
+                display: flex;
+                align-items: center;
+                gap: 25px;
+                font-size: 13px;
+            }
+
+            .fm-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                background: #ff8739;
+                color: #17171c;
+                padding: 16px 23px;
+                border-radius: 5px;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 1.3;
+                transition:
+                    background 0.2s,
+                    transform 0.2s;
+                border: 0;
+                cursor: pointer;
+                font-family: inherit;
+            }
+
+            .fm-button:hover {
+                background: #ffa163;
+                transform: translateY(-2px);
+            }
+
+            .fm-mobile-nav {
+                display: none;
+            }
+
+            .fm-eyebrow {
+                font: 11px/1.5 var(--m);
+                letter-spacing: 0.09em;
+                color: #c8ff00;
+                margin-bottom: 24px !important;
+            }
+
+            .fm-eyebrow:before {
+                content: '// ';
+                color: #8f909b;
+            }
+
+            .fm-lead {
+                font-size: 16px;
+                color: #b9bbc5;
+                max-width: 455px;
+                margin-bottom: 30px !important;
+            }
+
+            .fm-actions {
+                display: flex;
+                align-items: center;
+                gap: 25px;
+                font-size: 12px;
+            }
+
+            .fm-note {
+                font: 11px/1.5 var(--m) !important;
+                color: #999aa6;
+                margin-top: 20px !important;
+            }
+
+            /* hero */
+            .fm-hero {
+                display: grid;
+                grid-template-columns: 1.05fr 1fr;
+                gap: 65px;
+                align-items: center;
+                position: relative;
+                isolation: isolate;
+                min-height: calc(100svh - var(--fm-header-height, 92px));
+                padding-block: 38px 92px;
+            }
+
+            .fm-hero:before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                z-index: -2;
+                pointer-events: none;
+                background:
+                    linear-gradient(
+                        90deg,
+                        transparent 0,
+                        transparent calc(50% - 1px),
+                        #ffffff06 50%,
+                        transparent calc(50% + 1px)
+                    ),
+                    linear-gradient(#ffffff04 1px, transparent 1px);
+                background-size:
+                    100% 100%,
+                    100% 120px;
+                -webkit-mask-image: linear-gradient(
+                    transparent,
+                    #000 30%,
+                    #000 70%,
+                    transparent
+                );
+                mask-image: linear-gradient(
+                    transparent,
+                    #000 30%,
+                    #000 70%,
+                    transparent
+                );
+            }
+
+            .fm-hero:after {
+                content: '';
+                position: absolute;
+                inset: 0 -30px;
+                z-index: -1;
+                pointer-events: none;
+                background:
+                    radial-gradient(
+                        ellipse at 82% 42%,
+                        #ff87391c,
+                        transparent 48%
+                    ),
+                    radial-gradient(
+                        ellipse at 12% 75%,
+                        #c8ff0008,
+                        transparent 40%
+                    );
+            }
+
+            .fm-hero-art {
+                position: relative;
+                min-width: 0;
+                padding: 22px 25px 20px;
+                border: 1px solid #b8794938;
+                background:
+                    radial-gradient(
+                        ellipse at 70% 22%,
+                        #553120 0,
+                        transparent 55%
+                    ),
+                    #1d1c23;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow:
+                    0 0 80px #ff87390b,
+                    inset 0 1px #ffc99518;
+            }
+
+            .fm-hero-art:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    #ffbc8477,
+                    transparent
+                );
+                pointer-events: none;
+                animation: trail 10s ease-in-out infinite;
+            }
+
+            .fm-art-label,
+            .fm-art-foot {
+                font: 9px/1.5 var(--m);
+                letter-spacing: 0.08em;
+                color: #c8c4c1;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .fm-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #c8ff00;
+            }
+
+            .fm-orbit {
+                height: 186px;
+                position: relative;
+                display: grid;
+                place-items: center;
+            }
+
+            .fm-orbit i {
+                position: absolute;
+                width: 200px;
+                height: 130px;
+                border: 1px solid #bd72475e;
+                border-radius: 50%;
+                transform: rotate(-28deg);
+            }
+
+            .fm-orbit i:nth-child(2) {
+                transform: rotate(32deg);
+                width: 260px;
+                height: 110px;
+            }
+
+            .fm-orbit i:nth-child(3) {
+                transform: rotate(90deg);
+                width: 175px;
+                height: 135px;
+            }
+
+            .fm-orbit > span {
+                font-size: 94px;
+                line-height: 1;
+                color: #ff8739;
+                font-weight: 700;
+                letter-spacing: -12px;
+                transform: rotate(-10deg);
+                padding-right: 10px;
+            }
+
+            .fm-plan {
+                position: relative;
+                background: #23232c;
+                border: 1px solid #45414a;
+                border-radius: 8px;
+                padding: 23px;
+                box-shadow: 0 18px 45px #0003;
+            }
+
+            .fm-plan-top {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                font: 9px/1.4 var(--m);
+                color: #c8c5ce;
+                margin-bottom: 17px;
+            }
+
+            .fm-plan-top > span:last-child {
+                color: #a6a3b0;
+            }
+
+            .fm-plan h2 {
+                font-size: 23px;
+                letter-spacing: -0.04em;
+            }
+
+            .fm-plan > p {
+                font-size: 11px;
+                color: #a8a6b3;
+                margin-top: 7px;
+            }
+
+            .fm-plan ol {
+                padding: 0;
+                margin: 17px 0;
+                list-style: none;
+                display: grid;
+                gap: 5px;
+            }
+
+            .fm-plan li {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 9px;
+                color: #aaa8b5;
+                border: 1px solid transparent;
+                border-radius: 4px;
+            }
+
+            .fm-plan li > b {
+                width: 26px;
+                height: 26px;
+                display: grid;
+                place-items: center;
+                border: 1px solid #514955;
+                border-radius: 50%;
+                font: 10px var(--m);
+                flex-shrink: 0;
+            }
+
+            .fm-plan strong {
+                display: block;
+                font-size: 12px;
+                color: #e7e4ec;
+                font-weight: 500;
+            }
+
+            .fm-plan small {
+                display: block;
+                font-size: 10px;
+                margin-top: 4px;
+            }
+
+            .fm-plan li > span {
+                margin-left: auto;
+                font: 10px var(--m);
+            }
+
+            .fm-plan .fm-current {
+                border-color: #ac603e;
+                background: #ff873911;
+            }
+
+            .fm-current > b {
+                color: #ff8739;
+                border-color: #ff8739 !important;
+            }
+
+            .fm-ai-note {
+                border-top: 1px solid #41404b;
+                padding-top: 15px;
+                font-size: 11px;
+                color: #c8ff00;
+            }
+
+            .fm-art-foot {
+                justify-content: space-between;
+                margin-top: 24px;
+                font-size: 8px;
+            }
+
+            .fm-scroll-cue {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 9px;
+                font: 9px/1.5 var(--m);
+                letter-spacing: 0.16em;
+                color: #c7bdcc;
+                white-space: nowrap;
+            }
+
+            .fm-scroll-arrow {
+                display: grid;
+                place-items: center;
+                width: 30px;
+                height: 30px;
+                border: 1px solid #ffb47b50;
+                border-radius: 50%;
+                color: #ffac70;
+                font-size: 17px;
+                box-shadow: 0 0 20px #ff87390e;
+                animation: nudge 2.8s ease-in-out infinite;
+            }
+
+            @keyframes nudge {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(5px);
+                }
+            }
+
+            @keyframes trail {
+                0%,
+                100% {
+                    transform: translateY(0);
+                    opacity: 0;
+                }
+
+                15%,
+                75% {
+                    opacity: 0.65;
+                }
+
+                85% {
+                    transform: translateY(480px);
+                    opacity: 0;
+                }
+            }
+
+            .fm-strip {
+                border-block: 1px solid #34333d;
+                background: #1c1c23;
+            }
+
+            .fm-strip > .fm-wrap {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+                padding-block: 26px;
+            }
+
+            .fm-strip span {
+                font: 9px/1.6 var(--m);
+                color: #9c9aa8;
+                max-width: 130px;
+                letter-spacing: 0.08em;
+            }
+
+            .fm-strip strong {
+                font-size: 16px;
+                font-weight: 500;
+                letter-spacing: -0.04em;
+            }
+
+            .fm-strip i {
+                color: #ff8739;
+                font-style: normal;
+            }
+
+            .fm-section {
+                padding-block: 100px;
+            }
+
+            .fm-section-head {
+                position: relative;
+                padding-top: 20px;
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 45px;
+                margin-bottom: 45px;
+            }
+
+            .fm-section-head:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    #ff9f5f66,
+                    #ffffff12 45%,
+                    transparent
+                );
+            }
+
+            .fm-section-head > p {
+                max-width: 300px;
+                font-size: 14px;
+                color: #aaa9b6;
+            }
+
+            .fm-label {
+                font: 9px/1.7 var(--m);
+                letter-spacing: 0.08em;
+                color: #a6a4b1;
+            }
+
+            /* stack de cards */
+            .fm-stack {
+                --stack-top: calc(var(--fm-header-height, 92px) + 16px);
+                --stack-step: 20px;
+                display: block;
+                position: relative;
+                isolation: isolate;
+            }
+
+            .fm-tool {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .fm-stack .fm-tool {
+                position: sticky;
+                top: 112px;
+                min-height: 420px;
+                justify-content: center;
+                padding: 48px 60px;
+                margin-bottom: 56px;
+                border-radius: 18px;
+                border: 1px solid #51434a;
+                box-shadow:
+                    0 14px 35px #0002,
+                    inset 0 1px #ffffff15;
+                overflow: hidden;
+                background: #27232b;
+            }
+
+            .fm-stack .fm-tool:nth-child(1) {
+                top: var(--stack-top);
+                z-index: 1;
+                background: #292127;
+            }
+
+            .fm-stack .fm-tool:nth-child(2) {
+                top: calc(var(--stack-top) + var(--stack-step));
+                z-index: 2;
+                background: #323044;
+                border-color: #575169;
+            }
+
+            .fm-stack .fm-tool:nth-child(3) {
+                top: calc(var(--stack-top) + 2 * var(--stack-step));
+                z-index: 3;
+                background: #373e2a;
+                border-color: #5b6841;
+            }
+
+            .fm-stack .fm-tool:nth-child(4) {
+                top: calc(var(--stack-top) + 3 * var(--stack-step));
+                z-index: 4;
+                background: #493026;
+                border-color: #79503a;
+            }
+
+            .fm-stack .fm-tool:nth-child(5) {
+                top: calc(var(--stack-top) + 4 * var(--stack-step));
+                z-index: 5;
+                background: #ff934d;
+                border-color: #ffad77;
+                color: #241c19;
+                margin-bottom: 0;
+            }
+
+            .fm-stack .fm-tool:after {
+                content: '';
+                position: absolute;
+                right: -50px;
+                top: -90px;
+                width: 330px;
+                height: 330px;
+                border: 1px solid #ffffff0d;
+                border-radius: 50%;
+                box-shadow:
+                    0 0 0 36px #ffffff03,
+                    0 0 0 72px #ffffff02;
+                pointer-events: none;
+            }
+
+            .fm-stack-number {
+                position: absolute;
+                top: 17px;
+                left: 30px;
+                font: 10px/1 var(--m);
+                letter-spacing: 0.14em;
+                color: #d8c8cb;
+            }
+
+            .fm-tool-icon {
+                position: absolute;
+                right: 65px;
+                top: 50%;
+                transform: translateY(-50%);
+                font: 700 130px/1 var(--m);
+                color: #ffad75;
+                opacity: 0.65;
+                pointer-events: none;
+            }
+
+            .fm-stack .fm-tool h3 {
+                font-size: clamp(30px, 3.9vw, 50px);
+                max-width: 70%;
+                margin: 12px 0;
+                line-height: 1.08;
+                letter-spacing: -0.05em;
+            }
+
+            .fm-stack .fm-tool p {
+                font-size: 16px;
+                line-height: 1.7;
+                max-width: 65%;
+                color: #d0c6cf;
+                margin: 12px 0 24px;
+            }
+
+            .fm-stack .fm-tool .fm-label {
+                font-size: 10px;
+                color: #c9bbc9;
+            }
+
+            .fm-stack .fm-tool > a {
+                font-size: 13px;
+                color: #ffbb8b;
+            }
+
+            .fm-mini-path {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                max-width: 320px;
+                padding-top: 25px;
+                font: 10px var(--m);
+                color: #ffc69e;
+            }
+
+            .fm-mini-path i {
+                font-style: normal;
+                color: #b0734e;
+            }
+
+            .fm-stack
+                .fm-tool:last-child
+                :is(p, .fm-label, .fm-stack-number, .fm-tool-icon) {
+                color: #38241c;
+            }
+
+            .fm-stack:after {
+                content: '';
+                display: block;
+                height: 120px;
+            }
+
+            /* sobre */
+            .fm-method {
+                background:
+                    radial-gradient(
+                        ellipse at 0 35%,
+                        #ff873909,
+                        transparent 50%
+                    ),
+                    #1c1c23;
+                border-block: 1px solid #34333d;
+                padding-block: 90px;
+            }
+
+            .fm-method-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 90px;
+            }
+
+            .fm-method .fm-lead {
+                margin-top: 23px;
+            }
+
+            .photo {
+                position: relative;
+                display: block;
+                width: 150px;
+                aspect-ratio: 4/5;
+                border: 1px solid #39353d;
+                border-radius: 8px;
+                background:
+                    radial-gradient(
+                        ellipse at 70% 20%,
+                        #553120 0,
+                        transparent 60%
+                    ),
+                    #1d1c23;
+                overflow: hidden;
+                cursor: pointer;
+                margin-bottom: 26px;
+            }
+
+            .photo img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .photo span {
+                position: absolute;
+                inset: 0;
+                display: grid;
+                place-items: center;
+                font: 700 44px var(--m);
+                color: #ff8739;
+                letter-spacing: -3px;
+            }
+
+            .fm-scroll-status {
+                margin-top: 42px;
+                max-width: 320px;
+            }
+
+            .fm-scroll-status > div:first-child {
+                display: flex;
+                justify-content: space-between;
+                font: 10px/1.5 var(--m);
+                color: #c2bccd;
+                letter-spacing: 0.08em;
+            }
+
+            .fm-scroll-track {
+                height: 2px;
+                background: #45404e;
+                margin-top: 14px;
+                overflow: hidden;
+            }
+
+            .fm-scroll-track > span {
+                display: block;
+                width: 25%;
+                height: 100%;
+                background: #c8ff00;
+                transition: width 0.35s ease;
+            }
+
+            .fm-scroll-status small {
+                display: block;
+                font: 10px/1.5 var(--m);
+                color: #b0a9bb;
+                margin-top: 16px;
+            }
+
+            .fm-method-steps {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .fm-method-steps li {
+                display: flex;
+                gap: 25px;
+                padding: 26px 0;
+                border-bottom: 1px solid #393640;
+            }
+
+            .fm-method-steps li > span {
+                color: #ff8739;
+                font: 13px var(--m);
+                padding-top: 6px;
+            }
+
+            .fm-method-steps p {
+                font-size: 14px;
+                color: #b0aebc;
+                margin-top: 10px;
+            }
+
+            /* leituras */
+            .shelf {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+                gap: 44px 28px;
+            }
+
+            .book {
+                background: none;
+                border: 0;
+                color: inherit;
+                text-align: left;
+                cursor: pointer;
+                font: inherit;
+                padding: 0;
+            }
+
+            .cover {
+                --c1: #222;
+                --c2: #111;
+                position: relative;
+                aspect-ratio: 2/3;
+                border-radius: 3px 8px 8px 3px;
+                padding: 18px 16px 16px 24px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                color: #fff;
+                background: linear-gradient(160deg, var(--c1), var(--c2));
+                box-shadow: 0 18px 32px -14px rgba(0, 0, 0, 0.7);
+                overflow: hidden;
+                transition:
+                    transform 0.3s,
+                    box-shadow 0.3s;
+            }
+
+            .cover:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 9px;
+                background: rgba(0, 0, 0, 0.3);
+                z-index: 2;
+            }
+
+            .cover b {
+                font:
+                    600 1.1rem/1.1 Inter,
+                    sans-serif;
+                letter-spacing: -0.04em;
+            }
+
+            .cover small {
+                font: 9px var(--m);
+                opacity: 0.8;
+                letter-spacing: 0.06em;
+            }
+
+            .cover img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: 1;
+            }
+
+            .book:hover .cover,
+            .book:focus-visible .cover {
+                transform: translateY(-8px) rotate(-1.5deg);
+                box-shadow: 0 28px 40px -16px rgba(0, 0, 0, 0.8);
+            }
+
+            .meta {
+                margin-top: 16px;
+            }
+
+            .meta strong {
+                display: block;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 1.35;
+                letter-spacing: -0.02em;
+            }
+
+            .meta span {
+                color: #9c9aa8;
+                font: 10px var(--m);
+            }
+
+            dialog {
+                border: 1px solid #35333d;
+                border-radius: 12px;
+                background: #202027;
+                color: #f9f9f9;
+                padding: 0;
+                width: min(860px, 94vw);
+                max-height: 90svh;
+                overflow: auto;
+            }
+
+            dialog::backdrop {
+                background: rgba(10, 10, 14, 0.75);
+                backdrop-filter: blur(4px);
+            }
+
+            .mb {
+                display: grid;
+                grid-template-columns: 230px 1fr;
+                gap: 34px;
+                padding: clamp(22px, 4vw, 42px);
+            }
+
+            .mb h3 {
+                font-size: clamp(26px, 3vw, 34px);
+                margin: 14px 0 6px;
+            }
+
+            .mb .au {
+                font: 11px var(--m);
+                color: #c8ff00;
+                margin: 0 0 20px;
+            }
+
+            .mb h4 {
+                font: 10px var(--m);
+                letter-spacing: 0.09em;
+                color: #9c9aa8;
+                margin: 22px 0 8px;
+                font-weight: 400;
+            }
+
+            .mb p {
+                font-size: 14px;
+                color: #b0aebc;
+            }
+
+            .mb ul {
+                margin: 0;
+                padding-left: 1.1em;
+                color: #b0aebc;
+                font-size: 14px;
+            }
+
+            .mb li {
+                margin: 5px 0;
+            }
+
+            .tag {
+                font: 10px var(--m);
+                border: 1px solid #494251;
+                padding: 5px 11px;
+                border-radius: 99px;
+                color: #c9c5d2;
+                background: none;
+                cursor: pointer;
+                display: inline-block;
+            }
+
+            .tag:hover {
+                border-color: #c8ff00;
+                color: #c8ff00;
+            }
+
+            .x {
+                position: absolute;
+                top: 14px;
+                right: 14px;
+                z-index: 5;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                border: 1px solid #494251;
+                background: #16161c;
+                color: #f9f9f9;
+                cursor: pointer;
+            }
+
+            /* terminal */
+            .tm {
+                background: #1d1c23;
+                border: 1px solid #39353d;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 18px 45px #0003;
+            }
+
+            .tm-top {
+                display: flex;
+                gap: 7px;
+                align-items: center;
+                padding: 13px 16px;
+                border-bottom: 1px solid #34333d;
+                font: 10px var(--m);
+                color: #9c9aa8;
+            }
+
+            .tm-top i {
+                width: 9px;
+                height: 9px;
+                border-radius: 50%;
+                background: #39353d;
+            }
+
+            .tm-top i:first-child {
+                background: #ff8739;
+            }
+
+            .tm-top i:nth-child(2) {
+                background: #c8ff00;
+            }
+
+            .tm-top span {
+                margin-left: 10px;
+            }
+
+            .tm-out {
+                padding: 22px 24px 0;
+                font: 13px/1.8 var(--m);
+                color: #c8c4c1;
+                height: 300px;
+                overflow: auto;
+                white-space: pre-wrap;
+            }
+
+            .tm-in {
+                display: flex;
+                gap: 10px;
+                padding: 8px 24px 16px;
+                font: 13px var(--m);
+            }
+
+            .tm-in label {
+                color: #c8ff00;
+                white-space: nowrap;
+            }
+
+            .tm-in input {
+                flex: 1;
+                min-width: 0;
+                background: none;
+                border: 0;
+                color: #f9f9f9;
+                font: inherit;
+                outline: none;
+                caret-color: #ff8739;
+            }
+
+            .tm-sug {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                padding: 0 24px 24px;
+            }
+
+            /* manifesto expansivo */
+            .fm-expand-story {
+                position: relative;
+                height: 230svh;
+            }
+
+            .fm-expand-stage {
+                position: sticky;
+                top: var(--fm-header-height, 92px);
+                height: calc(100svh - var(--fm-header-height, 92px));
+                display: grid;
+                place-items: center;
+                overflow: hidden;
+            }
+
+            .fm-expand-banner {
+                position: relative;
+                isolation: isolate;
+                display: grid;
+                place-items: center;
+                width: 88%;
+                height: 72%;
+                border-radius: 30px;
+                background:
+                    radial-gradient(
+                        ellipse at 50% 120%,
+                        #788e174d,
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        ellipse at 90% 0,
+                        #ff87392b,
+                        transparent 55%
+                    ),
+                    #202127;
+                border: 1px solid #c8ff0028;
+                overflow: hidden;
+            }
+
+            .fm-expand-banner > .fm-wrap {
+                width: min(1060px, 86%);
+                text-align: center;
+                position: relative;
+            }
+
+            .fm-expand-banner h2 {
+                font-size: clamp(36px, 5.6vw, 78px);
+            }
+
+            .fm-expand-banner em {
+                color: #c8ff00;
+            }
+
+            .fm-expand-banner p:last-child {
+                color: #cbc9d2;
+                margin: 28px auto 0;
+                max-width: 600px;
+                font-size: 17px;
+            }
+
+            .fm-expand-lines {
+                position: absolute;
+                width: 700px;
+                height: 700px;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                border: 1px solid #c8ff001a;
+                border-radius: 50%;
+                box-shadow:
+                    0 0 0 80px #c8ff0005,
+                    0 0 0 160px #c8ff0003;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            .fm-expand-lines:before,
+            .fm-expand-lines:after {
+                content: '';
+                position: absolute;
+                inset: 15%;
+                border: 1px solid #ffb47b18;
+                border-radius: 50%;
+                transform: rotate(-35deg) scaleX(0.45);
+            }
+
+            .fm-expand-lines:after {
+                transform: rotate(35deg) scaleX(0.45);
+            }
+
+            /* faq */
+            .fm-faq {
+                display: grid;
+                grid-template-columns: 0.8fr 1.2fr;
+                gap: 60px;
+            }
+
+            .fm-faq details {
+                border-bottom: 1px solid #393640;
+            }
+
+            .fm-faq summary {
+                display: flex;
+                justify-content: space-between;
+                gap: 18px;
+                cursor: pointer;
+                list-style: none;
+                padding: 24px 0;
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            .fm-faq summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .fm-faq summary > span {
+                color: #ff8739;
+                font-size: 22px;
+                transition: transform 0.2s;
+            }
+
+            .fm-faq details[open] summary > span {
+                transform: rotate(45deg);
+            }
+
+            .fm-faq details p {
+                color: #b0aebc;
+                padding-bottom: 23px;
+                font-size: 14px;
+                max-width: 540px;
+            }
+
+            /* contato */
+            .fm-contact {
+                position: relative;
+                isolation: isolate;
+                padding: 100px 24px;
+                border-top: 1px solid #ffffff0b;
+                background: #1c1c23;
+            }
+
+            .fm-contact:before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                z-index: -1;
+                pointer-events: none;
+                background:
+                    radial-gradient(
+                        ellipse 430px 190px at 50% 0,
+                        #c8ff0011,
+                        transparent 75%
+                    ),
+                    radial-gradient(
+                        ellipse 310px 360px at 90% 80%,
+                        #ff873909,
+                        transparent 80%
+                    );
+            }
+
+            .fm-contact-inner {
+                max-width: 650px;
+                margin: auto;
+            }
+
+            .fm-contact header {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+
+            .fm-contact header > p:last-child {
+                color: #c0bdca;
+                font-size: 15px;
+                max-width: 470px;
+                margin: 22px auto 0;
+            }
+
+            .fm-contact header h2 {
+                font-size: clamp(32px, 3.5vw, 46px);
+            }
+
+            .fm-links {
+                display: grid;
+                gap: 14px;
+            }
+
+            .fm-links a {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                min-height: 56px;
+                border: 1px solid #494251;
+                border-radius: 7px;
+                padding: 12px 18px;
+                background: #23232d;
+                font-size: 14px;
+                transition:
+                    border-color 0.2s,
+                    transform 0.2s;
+            }
+
+            .fm-links a:hover {
+                border-color: #c8ff00;
+                transform: translateX(4px);
+            }
+
+            .fm-links small {
+                font: 10px var(--m);
+                color: #a9a4b5;
+            }
+
+            .fm-links .fm-button {
+                background: #c8ff00;
+                min-height: 52px;
+                margin-top: 8px;
+            }
+
+            .fm-links .fm-button:hover {
+                background: #d8ff4d;
+            }
+
+            .fm-final {
+                border-block: 1px solid #393640;
+                padding-block: 65px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 50px;
+            }
+
+            .fm-final p:not(.fm-eyebrow) {
+                color: #b0aebc;
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .fm-footer {
+                display: flex;
+                align-items: center;
+                gap: 28px;
+                padding-block: 35px;
+            }
+
+            .fm-footer p {
+                font-size: 11px;
+                color: #aaa8b5;
+            }
+
+            .fm-footer small {
+                margin-left: auto;
+                font-size: 10px;
+                color: #aaa8b5;
+            }
+
+            .fm-footer > a:last-child {
+                font-size: 11px;
+            }
+
+            .toast {
+                position: fixed;
+                left: 50%;
+                bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+                transform: translate(-50%, 120px);
+                background: #c8ff00;
+                color: #16161c;
+                font: 500 12px var(--m);
+                padding: 12px 20px;
+                border-radius: 5px;
+                z-index: 70;
+                transition: transform 0.35s;
+            }
+
+            .toast.show {
+                transform: translate(-50%, 0);
+            }
+
+            @media (min-width: 821px) {
+                .fm-method-grid {
+                    align-items: start;
+                }
+
+                .fm-method-grid > div:first-child {
+                    position: sticky;
+                    top: 130px;
+                    padding-block: 20px;
+                }
+
+                .fm-method-steps {
+                    padding-bottom: 10vh;
+                }
+
+                .fm-method-steps li {
+                    min-height: 48vh;
+                    align-items: center;
+                    padding: 64px 24px;
+                    border-left: 2px solid #3c3845;
+                    position: relative;
+                    transition:
+                        background 0.35s,
+                        border-color 0.35s;
+                }
+
+                .fm-method-steps li > span {
+                    font-size: 15px;
+                    padding-top: 0;
+                }
+
+                .fm-method-steps h3 {
+                    font-size: clamp(25px, 2.6vw, 35px);
+                    transition: color 0.35s;
+                }
+
+                .fm-method-steps p {
+                    font-size: 15px;
+                    max-width: 330px;
+                }
+
+                .fm-method-steps li.is-active {
+                    border-left-color: #c8ff00;
+                    background: linear-gradient(90deg, #c8ff0009, transparent);
+                }
+
+                .fm-method-steps li.is-active h3 {
+                    color: #ffad75;
+                }
+
+                .fm-method-steps li.is-active:before {
+                    content: '';
+                    position: absolute;
+                    left: -5px;
+                    top: 50%;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: #c8ff00;
+                }
+
+                .fm-method-steps li.is-active > span {
+                    color: #c8ff00;
+                }
+            }
+
+            @media (min-width: 821px) and (max-height: 800px) {
+                .fm-hero {
+                    padding-block: 24px 72px;
+                    gap: 55px;
+                }
+
+                .fm-hero h1 {
+                    font-size: clamp(42px, 6.8vh, 62px);
+                    margin-bottom: 18px;
+                }
+
+                .fm-hero .fm-lead {
+                    font-size: 14px;
+                    margin-bottom: 20px !important;
+                }
+
+                .fm-hero .fm-orbit {
+                    height: 48px;
+                }
+
+                .fm-hero .fm-orbit i {
+                    max-height: 44px;
+                }
+
+                .fm-hero .fm-orbit > span {
+                    font-size: 43px;
+                }
+
+                .fm-hero .fm-art-foot {
+                    display: none;
+                }
+
+                .fm-hero .fm-plan {
+                    padding: 14px;
+                }
+
+                .fm-hero .fm-plan ol {
+                    margin: 10px 0;
+                    gap: 0;
+                }
+
+                .fm-hero .fm-plan li {
+                    padding: 6px;
+                }
+            }
+
+            @media (max-height: 760px) {
+                .fm-stack .fm-tool {
+                    min-height: 300px;
+                    padding: 36px 40px 24px;
+                }
+
+                .fm-stack .fm-tool h3 {
+                    font-size: 32px;
+                }
+
+                .fm-stack .fm-tool p {
+                    font-size: 14px;
+                }
+
+                .fm-tool-icon {
+                    font-size: 90px;
+                }
+            }
+
+            @media (max-width: 1100px) {
+                .fm-header {
+                    gap: 24px;
+                }
+
+                .fm-desktop-nav {
+                    gap: 16px;
+                }
+
+                .fm-hero {
+                    gap: 30px;
+                }
+
+                .fm-actions {
+                    align-items: flex-start;
+                    flex-direction: column;
+                    gap: 18px;
+                }
+
+                .fm-method-grid {
+                    gap: 50px;
+                }
+            }
+
+            @media (max-width: 820px) {
+                .fm-wrap {
+                    width: calc(100% - 40px);
+                }
+
+                .fm-header {
+                    padding: 16px 20px;
+                    gap: 20px;
+                    min-height: 76px;
+                    flex-wrap: wrap;
+                }
+
+                .fm-desktop-nav {
+                    display: none;
+                }
+
+                .fm-header-actions {
+                    margin-left: auto;
+                }
+
+                .fm-header-actions > .fm-button {
+                    padding: 12px;
+                    font-size: 12px;
+                }
+
+                .fm-mobile-nav {
+                    display: block;
+                    width: 100%;
+                    border-top: 1px solid #34333d;
+                    padding-top: 12px;
+                    font-size: 12px;
+                }
+
+                .fm-mobile-nav nav {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 22px;
+                    padding-top: 16px;
+                }
+
+                .fm-mobile-nav summary {
+                    cursor: pointer;
+                }
+
+                .fm-hero {
+                    grid-template-columns: 1fr;
+                    padding-top: 0;
+                    gap: 28px;
+                }
+
+                .fm-hero > div:first-child {
+                    min-height: calc(100svh - var(--fm-header-height, 124px));
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    padding-block: 30px 95px;
+                }
+
+                .fm-hero h1 {
+                    font-size: clamp(42px, 10vw, 68px);
+                }
+
+                .fm-hero-art {
+                    max-width: 550px;
+                    width: 100%;
+                    margin: auto;
+                }
+
+                .fm-actions {
+                    flex-direction: row;
+                    align-items: center;
+                }
+
+                .fm-scroll-cue {
+                    top: calc(100svh - var(--fm-header-height, 124px) - 70px);
+                    bottom: auto;
+                }
+
+                .fm-section {
+                    padding-block: 65px;
+                }
+
+                .fm-section-head {
+                    display: block;
+                }
+
+                .fm-section-head > p {
+                    margin-top: 22px;
+                    max-width: 480px;
+                }
+
+                .fm-stack {
+                    --stack-top: calc(var(--fm-header-height, 124px) + 10px);
+                    --stack-step: 12px;
+                }
+
+                .fm-stack .fm-tool {
+                    min-height: 360px;
+                    padding: 44px 28px 30px;
+                    border-radius: 12px;
+                    margin-bottom: 32px;
+                }
+
+                .fm-stack .fm-tool h3 {
+                    max-width: 100%;
+                    font-size: 30px;
+                }
+
+                .fm-stack .fm-tool p {
+                    max-width: 100%;
+                    font-size: 14px;
+                }
+
+                .fm-tool-icon {
+                    font-size: 48px;
+                    right: 20px;
+                    top: 46px;
+                    opacity: 0.18;
+                }
+
+                .fm-stack-number {
+                    left: 28px;
+                    top: 10px;
+                    font-size: 9px;
+                }
+
+                .fm-method {
+                    padding-block: 65px;
+                }
+
+                .fm-method-grid {
+                    grid-template-columns: 1fr;
+                    gap: 45px;
+                }
+
+                .fm-scroll-status {
+                    display: none;
+                }
+
+                .fm-strip > .fm-wrap {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 18px;
+                }
+
+                .fm-strip span {
+                    max-width: none;
+                    flex-basis: 100%;
+                    text-align: center;
+                }
+
+                .fm-strip strong {
+                    font-size: 13px;
+                }
+
+                .fm-faq {
+                    grid-template-columns: 1fr;
+                    gap: 22px;
+                }
+
+                .fm-final {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 30px;
+                }
+
+                .fm-footer {
+                    flex-wrap: wrap;
+                }
+
+                .fm-footer p {
+                    flex-basis: calc(100% - 170px);
+                }
+
+                .fm-footer small {
+                    margin-left: 0;
+                }
+
+                .fm-expand-banner p:last-child {
+                    font-size: 14px;
+                }
+
+                .fm-expand-banner h2 {
+                    font-size: clamp(32px, 7vw, 52px);
+                }
+
+                .fm-contact {
+                    padding: 65px 20px;
+                }
+
+                .mb {
+                    grid-template-columns: 1fr;
+                }
+
+                .mb .cover {
+                    max-width: 170px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .fm-brand {
+                    font-size: 25px;
+                }
+
+                .fm-header-actions > .fm-button {
+                    padding: 11px 10px;
+                    font-size: 10px;
+                }
+
+                .fm-actions {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .fm-strip i {
+                    display: none;
+                }
+
+                .fm-footer p {
+                    flex-basis: 100%;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+
+                * {
+                    transition: none !important;
+                    animation: none !important;
+                }
+
+                .fm-expand-story {
+                    height: auto;
+                    padding: 40px 0;
+                }
+
+                .fm-expand-stage {
+                    position: relative;
+                    top: auto;
+                    height: auto;
+                    min-height: 65svh;
+                }
+
+                .fm-expand-banner {
+                    width: 92% !important;
+                    height: auto !important;
+                    min-height: 60svh;
+                    padding: 45px 0;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <a class="fm-skip" href="#conteudo">Pular para o conteúdo</a>
+        <header class="fm-header" id="hd">
+            <a class="fm-brand" href="#conteudo" aria-label="Geja Labs, início"
+                ><span aria-hidden="true">g.</span>geja labs</a
+            >
+            <nav class="fm-desktop-nav" aria-label="Navegação principal">
+                <a href="#experimentos">Experimentos</a
+                ><a href="#sobre">Sobre</a><a href="#leituras">Leituras</a
+                ><a href="#terminal">Terminal</a>
+            </nav>
+            <div class="fm-header-actions">
+                <a
+                    class="fm-button"
+                    href="https://github.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >GitHub ↗</a
+                >
+            </div>
+            <details class="fm-mobile-nav">
+                <summary>Menu</summary>
+                <nav aria-label="Navegação móvel">
+                    <a href="#experimentos">Experimentos</a
+                    ><a href="#sobre">Sobre</a><a href="#leituras">Leituras</a
+                    ><a href="#terminal">Terminal</a>
+                </nav>
+            </details>
+        </header>
+        <main id="conteudo">
+            <section class="fm-hero fm-wrap">
+                <div>
+                    <p class="fm-eyebrow">DESENVOLVEDOR PHP · UNOESC</p>
+                    <h1>Ideias<br />testadas em<br /><em>código real.</em></h1>
+                    <p class="fm-lead">
+                        Experimentos, projetos e leituras de Leonardo Geja.
+                    </p>
+                    <div class="fm-actions">
+                        <a class="fm-button" href="#experimentos"
+                            >Ver experimentos ↗</a
+                        ><a href="#sobre">Sobre mim ↓</a>
+                    </div>
+                </div>
+                <div class="fm-hero-art" aria-hidden="true">
+                    <div class="fm-plan">
+                        <div class="fm-plan-top">
+                            <span>MEUS EXPERIMENTOS</span><span>git log</span>
+                        </div>
+                        <ol>
+                            <li>
+                                <b>✓</b>
+                                <div>
+                                    <strong>Mini framework PHP</strong
+                                    ><small>no ar</small>
+                                </div>
+                                <span>01</span>
+                            </li>
+                            <li class="fm-current">
+                                <b>↗</b>
+                                <div>
+                                    <strong>Bot de monitoramento</strong
+                                    ><small>em construção</small>
+                                </div>
+                                <span>02</span>
+                            </li>
+                            <li>
+                                <b>03</b>
+                                <div>
+                                    <strong>Painel de métricas</strong
+                                    ><small>no ar</small>
+                                </div>
+                                <span>03</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <a class="fm-scroll-cue" href="#experimentos"
+                    ><span class="fm-scroll-arrow" aria-hidden="true"
+                        >↓</span
+                    ></a
+                >
+            </section>
+            <div class="fm-strip">
+                <div class="fm-wrap">
+                    <span>STACK DO LABORATÓRIO</span><strong>PHP</strong><i>↗</i
+                    ><strong>JavaScript</strong><i>↗</i><strong>MySQL</strong
+                    ><i>↗</i><strong>Git</strong><i>↗</i><strong>Linux</strong>
+                </div>
+            </div>
+
+            <section class="fm-section fm-wrap" id="experimentos">
+                <div class="fm-section-head">
+                    <div>
+                        <p class="fm-eyebrow">01 / EXPERIMENTOS</p>
+                        <h2>
+                            Uma ideia, um teste.<br /><em
+                                >Vários aprendizados.</em
+                            >
+                        </h2>
+                    </div>
+                    <p>
+                        Alguns estão no ar, outros em construção e alguns foram
+                        arquivados. Todos ensinaram alguma coisa.
+                    </p>
+                </div>
+                <div class="fm-stack">
+                    <article class="fm-tool">
+                        <span class="fm-stack-number">01 / 05</span
+                        ><span class="fm-tool-icon" aria-hidden="true">↗</span
+                        ><span class="fm-label">O LABORATÓRIO</span>
+                        <h3>Um espaço para tirar ideias do papel.</h3>
+                        <p>
+                            Cada experimento nasce de uma curiosidade, vira
+                            código e termina com um aprendizado registrado.
+                        </p>
+                        <div class="fm-mini-path" aria-hidden="true">
+                            <span>IDEIA</span><i>→</i><span>CÓDIGO</span><i>→</i
+                            ><span>APRENDIZADO</span>
+                        </div>
+                    </article>
+                    <article class="fm-tool">
+                        <span class="fm-stack-number">02 / 05</span
+                        ><span class="fm-tool-icon" aria-hidden="true">{}</span>
+                        <h3>Mini framework PHP</h3>
+                        <p>
+                            Roteador e container de dependências feitos do zero,
+                            para entender o que os grandes frameworks fazem por
+                            baixo.
+                        </p>
+                        <span class="fm-label"
+                            >PHP 8 · PSR-4 · COMPOSER · NO AR</span
+                        >
+                    </article>
+                    <article class="fm-tool">
+                        <span class="fm-stack-number">03 / 05</span
+                        ><span class="fm-tool-icon" aria-hidden="true"
+                            >&gt;_</span
+                        >
+                        <h3>Bot de monitoramento</h3>
+                        <p>
+                            Um bot no Telegram que avisa quando algo sai do
+                            esperado: servidor fora do ar ou rotina que falhou.
+                        </p>
+                        <span class="fm-label"
+                            >PHP · TELEGRAM API · CRON · EM CONSTRUÇÃO</span
+                        >
+                    </article>
+                    <article class="fm-tool">
+                        <span class="fm-stack-number">04 / 05</span
+                        ><span class="fm-tool-icon" aria-hidden="true">%</span>
+                        <h3>Painel de métricas</h3>
+                        <p>
+                            Dashboard pessoal para acompanhar commits, horas de
+                            estudo e leituras ao longo do ano.
+                        </p>
+                        <span class="fm-label"
+                            >JAVASCRIPT · CANVAS · SQLITE · NO AR</span
+                        >
+                    </article>
+                    <article class="fm-tool">
+                        <span class="fm-stack-number">05 / 05</span
+                        ><span class="fm-tool-icon" aria-hidden="true">×</span>
+                        <h3>O que não deu certo</h3>
+                        <p>
+                            Nem todo experimento vinga. Este fica registrado
+                            pelo que ensinou sobre arquitetura e escopo.
+                        </p>
+                        <span class="fm-label"
+                            >ARQUITETURA · GIT · ARQUIVADO</span
+                        >
+                    </article>
+                </div>
+            </section>
+
+            <section class="fm-method" id="sobre">
+                <div class="fm-wrap fm-method-grid">
+                    <div>
+                        <p class="fm-eyebrow">02 / SOBRE</p>
+                        <h2>
+                            Leonardo Geja,<br /><em
+                                >o cara por trás<br />do laboratório.</em
+                            >
+                        </h2>
+                        <p class="fm-lead">
+                            Desenvolvedor curioso, com experiência em produção e
+                            vontade constante de aprender.
+                        </p>
+                        <label
+                            class="photo"
+                            title="Clique para escolher sua foto"
+                            ><img id="img" alt="Leonardo Geja" hidden /><span
+                                id="ini"
+                                >LG</span
+                            ><input
+                                type="file"
+                                accept="image/*"
+                                id="file"
+                                hidden
+                        /></label>
+                        <div class="fm-scroll-status" aria-hidden="true">
+                            <div>
+                                <span>DO GEJA AO CÓDIGO</span
+                                ><span id="cnt">01 / 04</span>
+                            </div>
+                            <div class="fm-scroll-track">
+                                <span id="prg"></span>
+                            </div>
+                            <small>Continue rolando para explorar ↓</small>
+                        </div>
+                    </div>
+                    <ol class="fm-method-steps" id="steps">
+                        <li>
+                            <span>01</span>
+                            <div>
+                                <h3>Geja é o apelido que ficou</h3>
+                                <p>
+                                    Aqui eu reúno projetos pessoais e
+                                    experimentos: tudo o que construo para
+                                    aprender e testar ideias.
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <span>02</span>
+                            <div>
+                                <h3>36 anos e muita coisa para aprender</h3>
+                                <p>
+                                    Tecnologia, leitura e projetos paralelos se
+                                    alimentam. O que aprendo em um livro costuma
+                                    virar um experimento.
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <span>03</span>
+                            <div>
+                                <h3>
+                                    Mais de 5 anos de experiência, hoje na
+                                    Unoesc
+                                </h3>
+                                <p>
+                                    Sistemas em produção, manutenção e evolução
+                                    no dia a dia. Experiência que vem de
+                                    resolver problemas reais.
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <span>04</span>
+                            <div>
+                                <h3>PHP é a minha linguagem principal</h3>
+                                <p>
+                                    Moderno, maduro e produtivo. O laboratório
+                                    aceita qualquer linguagem que valha o
+                                    experimento.
+                                </p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="fm-section fm-wrap" id="leituras">
+                <div class="fm-section-head">
+                    <div>
+                        <p class="fm-eyebrow">03 / LEITURAS</p>
+                        <h2>
+                            Livros que moldam<br /><em>como eu trabalho.</em>
+                        </h2>
+                    </div>
+                    <p>
+                        Negócios, decisão, relacionamento e engenharia. Clique
+                        em um livro para ver o resumo.
+                    </p>
+                </div>
+                <div class="shelf" id="shelf"></div>
+            </section>
+
+            <section
+                class="fm-section fm-wrap"
+                id="terminal"
+                style="padding-top: 20px"
+            >
+                <div class="fm-section-head">
+                    <div>
+                        <p class="fm-eyebrow">04 / TERMINAL</p>
+                        <h2>Prefere explorar<br /><em>pelo terminal?</em></h2>
+                    </div>
+                    <p>
+                        Digite um comando ou clique em uma sugestão. Use help
+                        para ver todos.
+                    </p>
+                </div>
+                <div class="tm">
+                    <div class="tm-top">
+                        <i></i><i></i><i></i><span>geja@labs ~</span>
+                    </div>
+                    <div class="tm-out" id="tout" aria-live="polite"></div>
+                    <div class="tm-in">
+                        <label for="ti">geja@labs:~$</label
+                        ><input
+                            id="ti"
+                            autocomplete="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            aria-label="Comando"
+                        />
+                    </div>
+                    <div class="tm-sug" id="tsug"></div>
+                </div>
+            </section>
+
+            <section class="fm-expand-story" id="ex">
+                <div class="fm-expand-stage">
+                    <div class="fm-expand-banner" id="ban">
+                        <div class="fm-expand-lines" aria-hidden="true"></div>
+                        <div class="fm-wrap">
+                            <p class="fm-eyebrow">CURIOSIDADE COMO MÉTODO</p>
+                            <h2>
+                                A stack muda.<br /><em
+                                    >A vontade de construir fica.</em
+                                >
+                            </h2>
+                            <p>
+                                Linguagens e frameworks vêm e vão. O hábito de
+                                testar, medir e melhorar é o que sustenta cada
+                                experimento.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <dialog id="dlg">
+            <button class="x" id="x" aria-label="Fechar">✕</button>
+            <div class="mb" id="mb"></div>
+        </dialog>
+        <div class="toast" id="toast"></div>
+
+        <script>
+            /* ====== EDITE AQUI ====== */
+            const EMAIL = 'seu@email.com';
+            const FOTO = ''; // ex.: "foto.jpg" (na sua hospedagem)
+            const EXPS = [
+                ['Mini framework PHP', 'No ar'],
+                ['Bot de monitoramento', 'Em construção'],
+                ['Painel de métricas', 'No ar'],
+                ['O que não deu certo', 'Arquivado'],
+            ];
+            const BOOKS = [
+                {
+                    t: 'A Startup Enxuta',
+                    a: 'Eric Ries',
+                    y: 2011,
+                    tag: 'NEGÓCIOS',
+                    img: 'capas/startup-enxuta.jpg',
+                    c: ['#553120', '#1d1c23'],
+                    s: 'Eric Ries propõe tratar a criação de um produto como uma série de experimentos. Em vez de planejar por meses, a equipe lança rápido uma versão mínima, mede como as pessoas reagem e usa o que aprendeu para decidir o próximo passo.',
+                    k: [
+                        'Produto mínimo viável (MVP) para validar hipóteses',
+                        'Ciclo construir, medir, aprender',
+                        'Pivotar ou perseverar com base em dados',
+                        'Métricas que mostram aprendizado, não vaidade',
+                    ],
+                },
+                {
+                    t: 'Rápido e Devagar',
+                    a: 'Daniel Kahneman',
+                    y: 2011,
+                    tag: 'PSICOLOGIA',
+                    img: 'capas/rapido-e-devagar.jpg',
+                    c: ['#323044', '#1a1923'],
+                    s: 'O psicólogo Daniel Kahneman descreve dois modos de pensar: o Sistema 1, rápido e intuitivo, e o Sistema 2, lento e analítico. O livro mostra como atalhos mentais levam a erros previsíveis de julgamento e de decisão.',
+                    k: [
+                        'Sistema 1 (rápido) e Sistema 2 (devagar)',
+                        'Heurísticas e vieses cognitivos',
+                        'Aversão à perda e ancoragem',
+                        'Excesso de confiança nas próprias previsões',
+                    ],
+                },
+                {
+                    t: 'Como Fazer Amigos e Influenciar Pessoas',
+                    a: 'Dale Carnegie',
+                    y: 1936,
+                    tag: 'RELACIONAMENTOS',
+                    img: 'capas/como-fazer-amigos.jpg',
+                    c: ['#493026', '#201512'],
+                    s: 'Clássico sobre relacionamento humano. Carnegie reúne princípios práticos: demonstrar interesse genuíno pelos outros, ouvir com atenção, evitar criticar e fazer a outra pessoa se sentir valorizada.',
+                    k: [
+                        'Interesse genuíno pelas pessoas',
+                        'Ouvir mais do que falar',
+                        'Evitar críticas e discussões inúteis',
+                        'Lembrar e usar o nome da pessoa',
+                    ],
+                },
+                {
+                    t: 'Código Limpo',
+                    a: 'Robert C. Martin',
+                    y: 2008,
+                    tag: 'ENGENHARIA',
+                    img: 'capas/codigo-limpo.jpg',
+                    c: ['#373e2a', '#161a10'],
+                    s: 'Robert C. Martin defende que código é escrito para ser lido por pessoas. O livro mostra como nomear bem, manter funções pequenas, tratar erros e escrever testes para que o software continue fácil de mudar.',
+                    k: [
+                        'Nomes que revelam intenção',
+                        'Funções pequenas, com uma responsabilidade',
+                        'Testes como rede de segurança',
+                        'Refatoração contínua',
+                    ],
+                },
+                {
+                    t: 'Hábitos Atômicos',
+                    a: 'James Clear',
+                    y: 2018,
+                    tag: 'PRODUTIVIDADE',
+                    img: 'capas/habitos-atomicos.jpg',
+                    c: ['#292127', '#121015'],
+                    s: 'James Clear mostra que mudanças pequenas e consistentes geram grandes resultados com o tempo. O foco está em construir sistemas e identidade, e não apenas em perseguir metas.',
+                    k: [
+                        'Melhorar 1% ao dia',
+                        'Sistemas valem mais que metas',
+                        'Hábito óbvio, atraente, fácil e satisfatório',
+                        'Mudança de identidade',
+                    ],
+                },
+            ];
+            /* ======================== */
+            const $ = (s) => document.getElementById(s),
+                pad = (n) => String(n).padStart(2, '0');
+            const hd = $('hd'),
+                setH = () =>
+                    document.documentElement.style.setProperty(
+                        '--fm-header-height',
+                        hd.offsetHeight + 'px',
+                    );
+            setH();
+            addEventListener('resize', setH);
+
+            /* livros */
+            const cover = (b) =>
+                `<div class="cover" style="--c1:${b.c[0]};--c2:${b.c[1]}"><small>${b.tag}</small><b>${b.t}</b><small>${b.a}</small>${b.img ? `<img src="${b.img}" alt="Capa de ${b.t}" onerror="this.remove()">` : ''}</div>`;
+            $('shelf').innerHTML = BOOKS.map(
+                (b, i) =>
+                    `<button class="book" data-i="${i}" aria-label="Abrir resumo de ${b.t}">${cover(b)}<div class="meta"><strong>${b.t}</strong><span>${b.a}</span></div></button>`,
+            ).join('');
+            const dlg = $('dlg');
+            document.querySelectorAll('.book').forEach(
+                (el) =>
+                    (el.onclick = () => {
+                        const b = BOOKS[el.dataset.i];
+                        $('mb').innerHTML =
+                            `${cover(b)}<div><span class="tag">${b.tag}</span><h3>${b.t}</h3><p class="au">${b.a} · ${b.y}</p><h4>RESUMO</h4><p>${b.s}</p><h4>IDEIAS PRINCIPAIS</h4><ul>${b.k.map((x) => `<li>${x}</li>`).join('')}</ul></div>`;
+                        dlg.showModal();
+                    }),
+            );
+            $('x').onclick = () => dlg.close();
+            dlg.addEventListener('click', (e) => {
+                if (e.target === dlg) dlg.close();
+            });
+
+            /* foto */
+            const img = $('img'),
+                ini = $('ini');
+            function foto(u) {
+                img.src = u;
+                img.hidden = false;
+                ini.hidden = true;
+            }
+            img.onerror = () => {
+                img.hidden = true;
+                ini.hidden = false;
+            };
+            if (FOTO) foto(FOTO);
+            $('file').onchange = (e) => {
+                const f = e.target.files[0];
+                if (f) foto(URL.createObjectURL(f));
+            };
+
+            /* terminal */
+            const tout = $('tout'),
+                ti = $('ti');
+            const CMD = {
+                help: () => [
+                    'Comandos disponíveis:',
+                    '  whoami           quem sou eu',
+                    '  about            resumo rápido',
+                    '  ls experimentos  lista os experimentos',
+                    '  ls livros        lista as leituras',
+                    '  cat stack        tecnologias que uso',
+                    '  contato          como falar comigo',
+                    '  clear            limpa a tela',
+                ],
+                whoami: () => ['Leonardo Geja · Desenvolvedor PHP na Unoesc'],
+                about: () => [
+                    '36 anos · +5 anos de experiência · PHP no dia a dia',
+                    'Aqui eu testo ideias, estudo e documento o que aprendo.',
+                ],
+                'ls experimentos': () =>
+                    EXPS.map(
+                        (e, i) =>
+                            pad(i + 1) +
+                            '  ' +
+                            e[0].padEnd(24) +
+                            '[' +
+                            e[1] +
+                            ']',
+                    ),
+                'ls livros': () => BOOKS.map((b) => b.t + ' — ' + b.a),
+                'cat stack': () => ['PHP · JavaScript · MySQL · Git · Linux'],
+                contato: () => ['GitHub · LinkedIn · ' + EMAIL],
+            };
+            function say(l) {
+                const d = document.createElement('div');
+                d.textContent = l;
+                tout.appendChild(d);
+            }
+            function run(c) {
+                c = c.trim().toLowerCase().replace(/\s+/g, ' ');
+                if (!c) return;
+                say('geja@labs:~$ ' + c);
+                if (c === 'clear') {
+                    tout.textContent = '';
+                    return;
+                }
+                const f = CMD[c];
+                (f
+                    ? f()
+                    : c.startsWith('sudo')
+                      ? ['permissão negada. Boa tentativa.']
+                      : ['comando não encontrado: ' + c + '. Digite help.']
+                ).forEach(say);
+                tout.scrollTop = tout.scrollHeight;
+            }
+            ti.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    run(ti.value);
+                    ti.value = '';
+                }
+            });
+            $('tsug').innerHTML = [
+                'help',
+                'whoami',
+                'ls experimentos',
+                'ls livros',
+                'cat stack',
+                'contato',
+            ]
+                .map((c) => `<button class="tag" data-c="${c}">${c}</button>`)
+                .join('');
+            document
+                .querySelectorAll('#tsug button')
+                .forEach((b) => (b.onclick = () => run(b.dataset.c)));
+            say('Bem-vindo ao Geja Labs. Digite help para começar.');
+
+            /* sobre: jornada de scroll */
+            const lis = [...document.querySelectorAll('#steps li')];
+            const obs = new IntersectionObserver(
+                (es) =>
+                    es.forEach((e) => {
+                        if (!e.isIntersecting) return;
+                        const i = lis.indexOf(e.target);
+                        lis.forEach((l, j) =>
+                            l.classList.toggle('is-active', j === i),
+                        );
+                        $('cnt').textContent =
+                            pad(i + 1) + ' / ' + pad(lis.length);
+                        $('prg').style.width =
+                            ((i + 1) / lis.length) * 100 + '%';
+                    }),
+                { rootMargin: '-45% 0px -45% 0px' },
+            );
+            lis.forEach((l) => obs.observe(l));
+            lis[0].classList.add('is-active');
+
+            /* header + banner expansivo */
+            const ban = $('ban'),
+                ex = $('ex');
+            function tick() {
+                hd.classList.toggle('is-scrolled', scrollY > 8);
+                const r = ex.getBoundingClientRect(),
+                    p = Math.max(
+                        0,
+                        Math.min(1, (-r.top / (r.height - innerHeight)) * 1.7),
+                    );
+                ban.style.width = 88 + 12 * p + '%';
+                ban.style.height = 72 + 28 * p + '%';
+                ban.style.borderRadius = 30 * (1 - p) + 'px';
+            }
+            addEventListener('scroll', tick, { passive: true });
+            addEventListener('resize', tick);
+            tick();
+        </script>
+    </body>
+</html>
